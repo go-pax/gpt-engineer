@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -17,7 +16,7 @@ func NewDB(path string) *DB {
 }
 
 func (db *DB) Get(key string) (string, error) {
-	content, err := ioutil.ReadFile(filepath.Join(db.path, key))
+	content, err := os.ReadFile(filepath.Join(db.path, key))
 	if err != nil {
 		return "", err
 	}
@@ -25,7 +24,7 @@ func (db *DB) Get(key string) (string, error) {
 }
 
 func (db *DB) Set(key, val string) error {
-	return ioutil.WriteFile(filepath.Join(db.path, key), []byte(val), 0644)
+	return os.WriteFile(filepath.Join(db.path, key), []byte(val), 0644)
 }
 
 type DBs struct {
@@ -37,7 +36,7 @@ type DBs struct {
 }
 
 func NewDBs(rootPath string) *DBs {
-	inputPath := filepath.Join(rootPath, "example")
+	inputPath := rootPath
 	memoryPath := filepath.Join(inputPath, "memory")
 	workspacePath := filepath.Join(inputPath, "workspace")
 	identityPath := filepath.Join(rootPath, "identity")

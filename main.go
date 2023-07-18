@@ -25,10 +25,12 @@ func init() {
 
 func main() {
 	flag.Parse()
-
+	projectPath := flag.Arg(0)
+	if projectPath == "" {
+		projectPath = "./projects/example"
+	}
 	ai := NewAI(model, temperature, lang)
-
-	rootPath, _ := filepath.Abs("./")
+	rootPath, _ := filepath.Abs(projectPath)
 	dbs := NewDBs(rootPath)
 
 	for _, step := range STEPS[steps] {

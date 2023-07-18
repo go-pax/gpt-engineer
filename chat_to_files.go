@@ -18,8 +18,11 @@ func parseChat(chat string) []fileItem {
 	for _, match := range matches {
 		path := match[1]
 
+		regex = regexp.MustCompile(`([\w-]+\\)*?[\w-]+\.\w+`)
+		path = regex.FindString(path)
+
 		// Strip the filename of any non-allowed characters and convert / to \
-		regex = regexp.MustCompile(`[<>"|?*]`)
+		/*regex = regexp.MustCompile(`[<>"|?*]`)
 		path = regex.ReplaceAllString(path, "")
 
 		// Remove leading and trailing brackets
@@ -31,8 +34,8 @@ func parseChat(chat string) []fileItem {
 		path = regex.ReplaceAllString(path, "\\1")
 
 		// Remove trailing ]
-		regex = regexp.MustCompile("\\]$")
-		path = regex.ReplaceAllString(path, "")
+		regex = regexp.MustCompile(`\]$`)
+		path = regex.ReplaceAllString(path, "")*/
 
 		// Get the code
 		code := match[2]

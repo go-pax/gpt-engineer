@@ -30,14 +30,17 @@ GPT Engineer is made to be easy to adapt, extend, and make your agent learn how 
 - `export OPENAI_BASE=[your Azure OpenAI endpoint]` should be _https://[deployment name].openai.azure.com/_
 
 ### Run:
-- Edit `example/main_prompt` to specify what you want to build
-- Run `go run .`, default language is English, if you want to use other language, and `-lang` argument like `go run . -lang=Chinese`
+- Create an empty folder. If inside the repo, you can run:
+  - `cp -r projects/example/ projects/my-new-project`
+- Edit `main_prompt` file in your new folder to specify what you want to build
+- Run `go run ./projects/my-new-project`, default language is English, if you want to use other language, and `-lang` argument like `go run . -lang=Chinese`
+  - (Note, `go run . --help` lets you see all available options. For example `--steps use_feedback` lets you improve/fix code in a project)
 
 **(optional) Azure**
 - use the argument `-model [your deployment name]`
 
 ### Results:
-- Check the generated files in `example/workspace`
+- Check the generated files in `projects/my-new-project`
 
 ## Limitations
 

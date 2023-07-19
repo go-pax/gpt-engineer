@@ -10,7 +10,8 @@ type fileItem struct {
 }
 
 func parseChat(chat string) []fileItem {
-	regex := regexp.MustCompile("(\\S+)\n\\s*```[^\n]*\n([\\s\\S.]+?)```")
+	// Get the line above markdown
+	regex := regexp.MustCompile("([^\n]+)\n\\s*```[^\n]*\n([\\s\\S.]+?)```")
 	matches := regex.FindAllStringSubmatch(chat, -1)
 
 	files := make([]fileItem, 0, len(matches))

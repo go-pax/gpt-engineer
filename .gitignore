@@ -2,5 +2,10 @@
 .vscode/
 .idea/
 
-example/memory
-example/workspace
+# Ignore GPT Engineer files
+projects
+!projects/example
+
+# Benchmark files
+benchmark
+!benchmark/*/prompt

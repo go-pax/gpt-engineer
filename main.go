@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"os"
 	"path/filepath"
 	"reflect"
 	"runtime"
@@ -30,8 +31,9 @@ func main() {
 		projectPath = "./projects/example"
 	}
 	ai := NewAI(model, temperature, lang)
-	rootPath, _ := filepath.Abs(projectPath)
-	dbs := NewDBs(rootPath)
+	rootPath, _ := os.Getwd()
+	projectPath, _ = filepath.Abs(projectPath)
+	dbs := NewDBs(rootPath, projectPath)
 
 	for _, step := range STEPS[steps] {
 		messages := step(ai, dbs)

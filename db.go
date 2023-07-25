@@ -35,16 +35,15 @@ type DBs struct {
 	workspace *DB
 }
 
-func NewDBs(rootPath string) *DBs {
-	inputPath := rootPath
-	memoryPath := filepath.Join(inputPath, "memory")
-	workspacePath := filepath.Join(inputPath, "workspace")
+func NewDBs(rootPath string, projectPath string) *DBs {
+	memoryPath := filepath.Join(projectPath, "memory")
+	workspacePath := filepath.Join(projectPath, "workspace")
 	identityPath := filepath.Join(rootPath, "identity")
 	return &DBs{
 		memory:    NewDB(memoryPath),
 		logs:      NewDB(filepath.Join(memoryPath, "logs")),
 		identity:  NewDB(identityPath),
-		input:     NewDB(inputPath),
+		input:     NewDB(projectPath),
 		workspace: NewDB(workspacePath),
 	}
 }

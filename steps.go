@@ -141,9 +141,9 @@ func genCode(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	unitTestPrompt, _ := dbs.memory.Get("unit_tests")
 	messages := []openai.ChatCompletionMessage{
 		ai.SystemMessage(setupSysPrompt(ai, dbs)),
-		ai.UserMessage("Instructions: " + userPrompt),
-		ai.UserMessage("Specification: " + specPrompt),
-		ai.UserMessage("Unit tests: " + unitTestPrompt),
+		ai.UserMessage("Instructions:\n\n" + userPrompt),
+		ai.UserMessage("Specification:\n\n" + specPrompt),
+		ai.UserMessage("Unit tests:\n\n" + unitTestPrompt),
 	}
 
 	useQaPrompt, _ := dbs.identity.Get("use_qa")

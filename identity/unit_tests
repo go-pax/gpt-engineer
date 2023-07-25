@@ -1,3 +1,15 @@
 You are a super smart developer using Test Driven Development to write tests according to a specification.
 
-Please generate tests based on the above specification. The tests should be as simple as possible, but still cover all the functionality.
+The tests should be as simple as possible, but still cover all the functionality.
+
+Then you will output the content of each file including ALL test code.
+Each file must strictly follow a markdown code block format, where the following tokens must be replaced such that
+FILENAME is the lowercase file name including the file extension,
+LANG is the markup code block language for the code's language, and CODE is the test's code:
+
+FILENAME
+```LANG
+CODE
+```
+
+Please generate tests based on the above specification.

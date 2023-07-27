@@ -32,7 +32,7 @@ func parseChat(chat string) []fileItem {
 	return files
 }
 
-func toFiles(chat string, workspace *DB) {
+func toFiles(chat string, workspace DB) {
 	workspace.Set("all_output.txt", chat)
 
 	files := parseChat(chat)

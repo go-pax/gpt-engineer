@@ -1,49 +1,32 @@
 package main
 
 import (
-	"os"
+	"github.com/geekr-dev/gpt-engineer/db"
 	"path/filepath"
 )
 
-type DB struct {
-	path string
-}
-
-func NewDB(path string) *DB {
-	absPath, _ := filepath.Abs(path)
-	_ = os.MkdirAll(absPath, os.ModePerm)
-	return &DB{path: absPath}
-}
-
-func (db *DB) Get(key string) (string, error) {
-	content, err := os.ReadFile(filepath.Join(db.path, key))
-	if err != nil {
-		return "", err
-	}
-	return string(content), nil
-}
-
-func (db *DB) Set(key, val string) error {
-	return os.WriteFile(filepath.Join(db.path, key), []byte(val), 0644)
+type DB interface {
+	Set(key, val string) error
+	Get(key string) (string, error)
 }
 
 type DBs struct {
-	memory    *DB
-	logs      *DB
-	identity  *DB
-	input     *DB
-	workspace *DB
+	memory    DB
+	logs      DB
+	identity  DB
+	input     DB
+	workspace DB
 }
 
-func NewDBs(rootPath string, projectPath string) *DBs {
+func NewFileDBs(rootPath string, projectPath string) DBs {
 	memoryPath := filepath.Join(projectPath, "memory")
 	workspacePath := filepath.Join(projectPath, "workspace")
 	identityPath := filepath.Join(rootPath, "identity")
-	return &DBs{
-		memory:    NewDB(memoryPath),
-		logs:      NewDB(filepath.Join(memoryPath, "logs")),
-		identity:  NewDB(identityPath),
-		input:     NewDB(projectPath),
-		workspace: NewDB(workspacePath),
+	return DBs{
+		memory:    db.NewFile(memoryPath),
+		logs:      db.NewFile(filepath.Join(memoryPath, "logs")),
+		identity:  db.NewFile(identityPath),
+		input:     db.NewFile(projectPath),
+		workspace: db.NewFile(workspacePath),
 	}
 }

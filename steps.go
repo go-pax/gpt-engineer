@@ -13,7 +13,7 @@ import (
 	"github.com/tmc/langchaingo/prompts"
 )
 
-func setupSysPrompt(ai *AI, dbs *DBs) string {
+func setupSysPrompt(ai *AI, dbs DBs) string {
 	setupPrompt, _ := dbs.identity.Get("generate")
 	philosophyTemplate, _ := dbs.identity.Get("philosophy")
 	t := prompts.NewPromptTemplate(philosophyTemplate, nil)
@@ -21,7 +21,7 @@ func setupSysPrompt(ai *AI, dbs *DBs) string {
 	return setupPrompt + "\nUseful to know:\n" + philosophyPrompt
 }
 
-func simpleGen(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func simpleGen(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	// Run the AI on the main prompt and save the results
 	userPrompt, _ := dbs.input.Get("main_prompt")
 	messages := ai.Start(
@@ -34,7 +34,7 @@ func simpleGen(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 }
 
 // Ask the user if they want to clarify anything and save the results to the workspace
-func clarify(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func clarify(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	// 1. system prompt
 	qaTemplate, _ := dbs.identity.Get("qa")
 	t := prompts.NewPromptTemplate(qaTemplate, nil)
@@ -70,7 +70,7 @@ func clarify(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-func genSpec(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func genSpec(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	// Generate a spec from the main prompt + clarifications and save the results to the workspace
 	userPrompt, _ := dbs.input.Get("main_prompt")
 	messages := []openai.ChatCompletionMessage{
@@ -84,7 +84,7 @@ func genSpec(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-func respec(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func respec(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	specMessages, _ := dbs.logs.Get("genSpec")
 	var messages []openai.ChatCompletionMessage
 	json.Unmarshal([]byte(specMessages), &messages)
@@ -100,7 +100,7 @@ func respec(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-func genUnitTests(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func genUnitTests(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	//  Generate unit tests based on the specification, that should work.
 	userPrompt, _ := dbs.input.Get("main_prompt")
 	specPrompt, _ := dbs.memory.Get("specification")
@@ -119,7 +119,7 @@ func genUnitTests(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-func genClarifiedCode(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func genClarifiedCode(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	// get the messages from previous step
 	clarifyContent, _ := dbs.logs.Get("clarify")
 	var messages []openai.ChatCompletionMessage
@@ -134,7 +134,7 @@ func genClarifiedCode(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-func genCode(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func genCode(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	// get the messages from previous step
 	userPrompt, _ := dbs.input.Get("main_prompt")
 	specPrompt, _ := dbs.memory.Get("specification")
@@ -154,7 +154,7 @@ func genCode(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-func executeEntrypoint(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func executeEntrypoint(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	command, _ := dbs.workspace.Get("run.sh")
 
 	reader := bufio.NewReader(os.Stdin)
@@ -184,7 +184,7 @@ func executeEntrypoint(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return []openai.ChatCompletionMessage{}
 }
 
-func genEntrypoint(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func genEntrypoint(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	outputTxt, _ := dbs.workspace.Get("all_output.txt")
 	messages := ai.Start(
 		`You will get information about a codebase that is currently on disk in the current folder.\n`+
@@ -215,7 +215,7 @@ func genEntrypoint(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-func useFeedback(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func useFeedback(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	userPrompt, _ := dbs.input.Get("main_prompt")
 	outputTxt, _ := dbs.workspace.Get("all_output.txt")
 	useFeedbackPrompt, _ := dbs.identity.Get("use_feedback")
@@ -231,7 +231,7 @@ func useFeedback(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-func fixCode(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
+func fixCode(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	genCodes, _ := dbs.logs.Get("gen_code")
 	var messages []openai.ChatCompletionMessage
 	json.Unmarshal([]byte(genCodes), &messages)
@@ -249,7 +249,7 @@ func fixCode(ai *AI, dbs *DBs) []openai.ChatCompletionMessage {
 	return messages
 }
 
-var STEPS = map[string][]func(*AI, *DBs) []openai.ChatCompletionMessage{
+var STEPS = map[string][]func(*AI, DBs) []openai.ChatCompletionMessage{
 	"default": {
 		genSpec,
 		genUnitTests,

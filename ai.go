@@ -15,6 +15,7 @@ import (
 var defaultModel = "gpt-4"
 var defaultTemperature = 0.1
 var defaultLang = "English"
+var defaultDbType = "file"
 
 type AI struct {
 	model       string

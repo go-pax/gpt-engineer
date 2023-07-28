@@ -12,11 +12,13 @@ type DB interface {
 }
 
 type DBs struct {
-	memory    DB
-	logs      DB
-	identity  DB
-	input     DB
-	workspace DB
+	canExecute bool
+	dbType     string
+	memory     DB
+	logs       DB
+	identity   DB
+	input      DB
+	workspace  DB
 }
 
 func NewFileDBs(rootPath string, projectPath string) DBs {
@@ -24,10 +26,12 @@ func NewFileDBs(rootPath string, projectPath string) DBs {
 	workspacePath := filepath.Join(projectPath, "workspace")
 	identityPath := filepath.Join(rootPath, "identity")
 	return DBs{
-		memory:    file.New(memoryPath),
-		logs:      file.New(filepath.Join(memoryPath, "logs")),
-		identity:  file.New(identityPath),
-		input:     file.New(projectPath),
-		workspace: file.New(workspacePath),
+		canExecute: file.CanExecute,
+		dbType:     file.DbType,
+		memory:     file.New(memoryPath),
+		logs:       file.New(filepath.Join(memoryPath, "logs")),
+		identity:   file.New(identityPath),
+		input:      file.New(projectPath),
+		workspace:  file.New(workspacePath),
 	}
 }

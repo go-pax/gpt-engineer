@@ -155,6 +155,10 @@ func genCode(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 }
 
 func executeEntrypoint(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
+	if !dbs.canExecute {
+		fmt.Printf(`db, %s doesn't allow interactive execution, exiting step`, dbs.dbType)
+		return []openai.ChatCompletionMessage{}
+	}
 	command, _ := dbs.workspace.Get("run.sh")
 
 	reader := bufio.NewReader(os.Stdin)

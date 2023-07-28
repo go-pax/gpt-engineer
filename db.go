@@ -1,13 +1,14 @@
 package main
 
 import (
-	"github.com/geekr-dev/gpt-engineer/db"
+	"github.com/geekr-dev/gpt-engineer/db/file"
 	"path/filepath"
 )
 
 type DB interface {
 	Set(key, val string) error
 	Get(key string) (string, error)
+	Path() string
 }
 
 type DBs struct {
@@ -23,10 +24,10 @@ func NewFileDBs(rootPath string, projectPath string) DBs {
 	workspacePath := filepath.Join(projectPath, "workspace")
 	identityPath := filepath.Join(rootPath, "identity")
 	return DBs{
-		memory:    db.NewFile(memoryPath),
-		logs:      db.NewFile(filepath.Join(memoryPath, "logs")),
-		identity:  db.NewFile(identityPath),
-		input:     db.NewFile(projectPath),
-		workspace: db.NewFile(workspacePath),
+		memory:    file.New(memoryPath),
+		logs:      file.New(filepath.Join(memoryPath, "logs")),
+		identity:  file.New(identityPath),
+		input:     file.New(projectPath),
+		workspace: file.New(workspacePath),
 	}
 }

@@ -166,7 +166,7 @@ func executeEntrypoint(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	fmt.Println("If yes, press enter, Otherwise, type \"no\"")
 	fmt.Println()
 	text, _ := reader.ReadString('\n')
-	if text == "no" {
+	if strings.TrimRight(text, "\n") != "yes" {
 		fmt.Println("ok, not executing the code")
 		return []openai.ChatCompletionMessage{}
 	}
@@ -174,6 +174,7 @@ func executeEntrypoint(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	fmt.Println()
 
 	cmd := exec.Command("bash", "-c", command)
+	cmd.Dir = dbs.workspace.Path()
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
@@ -190,7 +191,7 @@ func genEntrypoint(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 		`You will get information about a codebase that is currently on disk in the current folder.\n`+
 			`From this you will answer with code blocks that includes all the necessary unix terminal commands to`+
 			`a) install dependencies `+
-			`b) run all necessary parts of the codebase (in parallell if necessary).\n`+
+			`b) run all necessary parts of the codebase (in parallel if necessary).\n`+
 			`Do not install globally. `+
 			`Do not use sudo.\n`+
 			`Do not explain the code, just give the commands.\n`,

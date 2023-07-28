@@ -5,6 +5,11 @@ import (
 	"path/filepath"
 )
 
+const (
+	CanExecute = true
+	DbType     = "File"
+)
+
 type File struct {
 	path string
 }

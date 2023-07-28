@@ -1,4 +1,4 @@
-package db
+package file
 
 import (
 	"os"
@@ -9,7 +9,7 @@ type File struct {
 	path string
 }
 
-func NewFile(path string) File {
+func New(path string) File {
 	absPath, _ := filepath.Abs(path)
 	_ = os.MkdirAll(absPath, os.ModePerm)
 	return File{path: absPath}
@@ -25,4 +25,8 @@ func (f File) Get(key string) (string, error) {
 
 func (f File) Set(key, val string) error {
 	return os.WriteFile(filepath.Join(f.path, key), []byte(val), 0600)
+}
+
+func (f File) Path() string {
+	return f.path
 }

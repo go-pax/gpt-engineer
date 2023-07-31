@@ -36,6 +36,8 @@ GPT Engineer is made to be easy to adapt, extend, and make your agent learn how 
 - Run `go run ./projects/my-new-project`, default language is English, if you want to use other language, and `-lang` argument like `go run . -lang=Chinese`
   - (Note, `go run . --help` lets you see all available options. For example `--steps use_feedback` lets you improve/fix code in a project)
 
+**(optional) Database**
+You should use the scheme of the database instead of the path to your projects. View the readme files in the `database` folder to understand how to use.
 **(optional) Azure**
 - use the argument `-model [your deployment name]`
 

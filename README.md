@@ -27,7 +27,7 @@ GPT Engineer is made to be easy to adapt, extend, and make your agent learn how 
 - `export OPENAI_API_KEY=[your api key]` with a key that has GPT4 access, if you don't have GPT4 access, then it will use GPT-3.5 as a fallback.
 
 **Azure**
-- `export OPENAI_BASE=[your Azure OpenAI endpoint]` should be _https://[deployment name].openai.azure.com/_
+- `export OPENAI_BASE=[your Azure OpenAI URL endpoint]` should be _https://[deployment name].openai.azure.com/_
 
 ### Run:
 - Create an empty folder. If inside the repo, you can run:

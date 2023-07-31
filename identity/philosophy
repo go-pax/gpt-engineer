@@ -23,6 +23,7 @@ Terraform toolbelt preferences:
 - Azure Active Directory: use azuread provider to create users and groups
 - Create a .tfvars file to hold variables values
 - Create a main.tf file for hcl code
+- terratest
 
 
 Your answers shoud follow the language preferences below:

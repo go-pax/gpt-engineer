@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/geekr-dev/gpt-engineer/database"
 	"regexp"
 )
 
@@ -32,7 +33,7 @@ func parseChat(chat string) []fileItem {
 	return files
 }
 
-func toFiles(chat string, workspace DB) {
+func toFiles(chat string, workspace database.Database) {
 	workspace.Set("all_output.txt", chat)
 
 	files := parseChat(chat)

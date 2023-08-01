@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"flag"
 	"os"
-	"path/filepath"
 	"reflect"
 	"runtime"
 	"strings"
@@ -15,7 +14,6 @@ var (
 	lang        string
 	temperature float64
 	steps       string
-	dbType      string
 )
 
 func init() {
@@ -23,7 +21,6 @@ func init() {
 	flag.Float64Var(&temperature, "temperature", defaultTemperature, "The temperature to use")
 	flag.StringVar(&lang, "lang", defaultLang, "The language to use")
 	flag.StringVar(&steps, "steps", "default", "The steps to run")
-	flag.StringVar(&dbType, "db", defaultDbType, "The db type used to read & write files")
 }
 
 func main() {
@@ -33,13 +30,9 @@ func main() {
 		projectPath = "./projects/example"
 	}
 	ai := NewAI(model, temperature, lang)
-	var dbs DBs
-	if dbType == "file" {
-		rootPath, _ := os.Getwd()
-		projectPath, _ = filepath.Abs(projectPath)
-		dbs = NewFileDBs(rootPath, projectPath)
-	} else {
-		println("unknown db, %s", dbType)
+	dbs, err := NewDBs(projectPath)
+	if err != nil {
+		print(err)
 		os.Exit(1)
 	}
 

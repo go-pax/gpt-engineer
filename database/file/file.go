@@ -60,8 +60,7 @@ func parseURL(url string) (string, error) {
 			return "", err
 		}
 		p = wd
-
-	} else if p[0:1] == "." || p[0:1] != "/" {
+	} else if p[0:1] != "/" {
 		// make path absolute if relative
 		abs, err := filepath.Abs(p)
 		if err != nil {
@@ -81,7 +80,7 @@ func (f File) Get(key string) (string, error) {
 }
 
 func (f File) Set(key, val string) error {
-	return os.WriteFile(filepath.Join(f.path, key), []byte(val), 06444)
+	return os.WriteFile(filepath.Join(f.path, key), []byte(val), 06000)
 }
 
 func (f File) Path() string {

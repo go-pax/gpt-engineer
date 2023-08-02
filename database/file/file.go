@@ -80,7 +80,7 @@ func (f File) Get(key string) (string, error) {
 }
 
 func (f File) Set(key, val string) error {
-	return os.WriteFile(filepath.Join(f.path, key), []byte(val), 06000)
+	return os.WriteFile(filepath.Join(f.path, key), []byte(val), 06444)
 }
 
 func (f File) Path() string {

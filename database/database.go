@@ -13,20 +13,16 @@ var databases = make(map[string]Database)
 //
 // How to implement?
 //  1. Implement this interface.
-//  2. Optionally, add a function named `WithInstance`.
-//     This function should accept an existing source instance and a Config{} struct
-//     and return a driver instance.
-//  3. Add a test that calls source/testing.go:Test()
-//  4. Add own tests for Open(), WithInstance() (when provided) and Close().
-//     All other functions are tested by tests in source/testing.
-//     Saves you some time and makes sure all source drivers behave the same way.
+//  2. Add a test that calls database/testing.go:Test()
+//  4. Add own tests for Open() and Close().
+//     All other functions are tested by tests in database/testing.
+//     Saves you some time and makes sure all databases behave the same way.
 //  5. Call Register in init().
 //
 // Guidelines:
 //   - All configuration input must come from the URL string in func Open()
-//     or the Config{} struct in WithInstance. Don't os.Getenv().
 //   - Drivers are supposed to be read only.
-//   - Ideally don't load any contents (into memory) in Open or WithInstance.
+//   - Ideally don't load any contents (into memory) in Open
 type Database interface {
 	// Open returns a new database instance configured with parameters
 	// coming from the URL string.

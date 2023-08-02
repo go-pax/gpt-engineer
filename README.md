@@ -38,6 +38,7 @@ GPT Engineer is made to be easy to adapt, extend, and make your agent learn how 
 
 **(optional) Database**
 You should use the scheme of the database instead of the path to your projects. View the readme files in the `database` folder to understand how to use.
+
 **(optional) Azure**
 - use the argument `-model [your deployment name]`
 

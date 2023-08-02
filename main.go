@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&model, "model", defaultModel, "The model to use")
+	flag.StringVar(&model, "model", defaultModel, "The model to use or for Azure use deployment name")
 	flag.Float64Var(&temperature, "temperature", defaultTemperature, "The temperature to use")
 	flag.StringVar(&lang, "lang", defaultLang, "The language to use")
 	flag.StringVar(&steps, "steps", "default", "The steps to run")

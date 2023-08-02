@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	testFile     = "test.txt"
-	testContents = "contents of test file"
+	TestFile     = "test.txt"
+	TestContents = "contents of test file"
 )
 
 // Test runs tests against database implementations.
@@ -23,17 +23,17 @@ func Test(t *testing.T, d database.Database) {
 }
 
 func TestGet(t *testing.T, d database.Database) {
-	contents, err := d.Get(testFile)
+	contents, err := d.Get(TestFile)
 	if err != nil {
 		t.Fatalf("Get: expected err to be nil, got %v", err)
 	}
-	if contents != testContents {
-		t.Errorf("Get: expected contents, got %s", contents)
+	if contents != TestContents {
+		t.Errorf("Get: expected %s, got %s", TestContents, contents)
 	}
 }
 
 func TestSet(t *testing.T, d database.Database) {
-	err := d.Set(testFile, testContents)
+	err := d.Set(TestFile, TestContents)
 	if err != nil {
 		t.Fatalf("Set: expected err to be nil, got %v", err)
 	}

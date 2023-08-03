@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"os"
 	"reflect"
 	"runtime"
@@ -34,7 +35,7 @@ func main() {
 	ai := NewAI(model, temperature, lang)
 	dbs, err := NewDBs(projectPath, prompt)
 	if err != nil {
-		print(err)
+		fmt.Printf("failed, %s", err)
 		os.Exit(1)
 	}
 

@@ -237,7 +237,7 @@ func useFeedback(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 }
 
 func fixCode(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
-	genCodes, _ := dbs.logs.Get("gen_code")
+	genCodes, _ := dbs.logs.Get("genCode")
 	var messages []openai.ChatCompletionMessage
 	json.Unmarshal([]byte(genCodes), &messages)
 	codeOutput := messages[len(messages)-1].Content

@@ -87,7 +87,6 @@ func (f File) Path() string {
 	return f.path
 }
 
-// Close is part of source.Driver interface implementation.
 // Closes the file system if possible.
 func (f File) Close() error {
 	c, ok := f.fsys.(io.Closer)

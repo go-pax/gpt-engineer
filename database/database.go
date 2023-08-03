@@ -28,7 +28,7 @@ type Database interface {
 	// coming from the URL string.
 	Open(url string, subdir string) (Database, error)
 
-	// Close closes the underlying source instance managed by the database.
+	// Close closes the underlying  instance managed by the database.
 	Close() error
 
 	// Get reads the contents of a file or resource by name.

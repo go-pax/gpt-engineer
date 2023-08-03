@@ -43,8 +43,6 @@ func (m *Memory) Path() string {
 	return ""
 }
 
-// Close is part of source.Driver interface implementation.
-// Closes the file system if possible.
 func (m *Memory) Close() error {
 	return nil
 }

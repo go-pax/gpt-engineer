@@ -11,13 +11,15 @@ import (
 
 var (
 	model       string
+	prompt      string
 	lang        string
 	temperature float64
 	steps       string
 )
 
 func init() {
-	flag.StringVar(&model, "model", defaultModel, "The model to use")
+	flag.StringVar(&model, "model", defaultModel, "The model to use or for Azure use deployment name")
+	flag.StringVar(&prompt, "prompt", "", "(optional) required when using a database URL otherwise main_prompt in filepath is used")
 	flag.Float64Var(&temperature, "temperature", defaultTemperature, "The temperature to use")
 	flag.StringVar(&lang, "lang", defaultLang, "The language to use")
 	flag.StringVar(&steps, "steps", "default", "The steps to run")
@@ -30,7 +32,7 @@ func main() {
 		projectPath = "./projects/example"
 	}
 	ai := NewAI(model, temperature, lang)
-	dbs, err := NewDBs(projectPath)
+	dbs, err := NewDBs(projectPath, prompt)
 	if err != nil {
 		print(err)
 		os.Exit(1)

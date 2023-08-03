@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/geekr-dev/gpt-engineer/database"
 	"github.com/geekr-dev/gpt-engineer/database/file"
+	_ "github.com/geekr-dev/gpt-engineer/database/github"
+	_ "github.com/geekr-dev/gpt-engineer/database/memory"
 )
 
 type DBs struct {
@@ -15,7 +17,7 @@ type DBs struct {
 	workspace  database.Database
 }
 
-func NewDBs(projectPath string) (DBs, error) {
+func NewDBs(projectPath string, prompt string) (DBs, error) {
 	memoryDB, err := database.Open(projectPath, "memory")
 	if err != nil {
 		return DBs{}, err
@@ -32,10 +34,17 @@ func NewDBs(projectPath string) (DBs, error) {
 	if err != nil {
 		return DBs{}, err
 	}
+	if prompt != "" {
+		if err := inputDB.Set("main_prompt", prompt); err != nil {
+			return DBs{}, err
+		}
+	}
+
 	identityDB, err := database.Open("file://./", "identity")
 	if err != nil {
 		return DBs{}, err
 	}
+
 	return DBs{
 		canExecute: file.CanExecute,
 		memory:     memoryDB,

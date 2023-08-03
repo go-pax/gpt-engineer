@@ -80,6 +80,10 @@ func (g *Github) Open(url string, subDirectory string) (database.Database, error
 		gn.config.Path = strings.Join(pe[1:], "/")
 	}
 
+	if subDirectory != "" {
+		gn.config.Path = path.Join(gn.config.Path, subDirectory)
+	}
+
 	if err := gn.ensureRepo(); err != nil {
 		return nil, err
 	}
@@ -145,7 +149,7 @@ func (g *Github) Get(file string) (contents string, err error) {
 	}
 	defer func() {
 		if err := r.Close(); err != nil {
-			println("failed to close reader, %v", err)
+			fmt.Printf("failed to close reader, %v\n", err)
 		}
 	}()
 
@@ -170,16 +174,13 @@ func (g *Github) Set(file, contents string) error {
 		return ErrNoAccess
 	}
 
-	fileContent, _, _, err := g.client.Repositories.GetContents(
+	fileContent, _, _, _ := g.client.Repositories.GetContents(
 		context.Background(),
 		g.config.Owner,
 		g.config.Repo,
 		path.Join(g.config.Path, file),
 		g.options,
 	)
-	if err != nil {
-		println("error getting file, %v", err)
-	}
 
 	options := &github.RepositoryContentFileOptions{
 		Message: github.String(fmt.Sprintf("committing file, %s", file)),
@@ -194,7 +195,7 @@ func (g *Github) Set(file, contents string) error {
 		options.SHA = fileContent.SHA
 	}
 
-	_, _, err = fn(
+	_, _, err := fn(
 		context.Background(),
 		g.config.Owner,
 		g.config.Repo,

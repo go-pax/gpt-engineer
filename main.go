@@ -32,7 +32,7 @@ func main() {
 		projectPath = "./projects/example"
 	}
 	ai := NewAI(model, temperature, lang)
-	dbs, err := NewDBs(projectPath)
+	dbs, err := NewDBs(projectPath, prompt)
 	if err != nil {
 		print(err)
 		os.Exit(1)

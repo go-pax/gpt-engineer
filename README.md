@@ -1,8 +1,6 @@
 # GPT Engineer
 
-[中文文档](https://github.com/geekr-dev/gpt-engineer/blob/master/README_zh.md)
-
-> Golang implement version of [AntonOsika/gpt-engineer](https://github.com/AntonOsika/gpt-engineer), With support to switch language by `-lang` argument.
+Thanks to the projects [AntonOsika/gpt-engineer](https://github.com/AntonOsika/gpt-engineer) and [geekr-dev/gpt-engineer](https://github.com/geekr-dev/gpt-engineer)
 
 **Specify what you want it to build, the AI asks for clarification, and then builds it.**
 

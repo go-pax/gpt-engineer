@@ -25,7 +25,7 @@ GPT Engineer is made to be easy to adapt, extend, and make your agent learn how 
 - `export OPENAI_API_KEY=[your api key]` with a key that has GPT4 access, if you don't have GPT4 access, then it will use GPT-3.5 as a fallback.
 
 **Azure**
-- also add `export OPENAI_API_BASE=[your Azure OpenAI URL endpoint]` should be _https://[deployment name].openai.azure.com/_
+- needed for Azure OAI `export OPENAI_API_BASE=[your Azure OpenAI URL endpoint]` should be _https://[deployment name].openai.azure.com/_
 
 ### Run:
 - Create an empty folder. If inside the repo, you can run:
@@ -35,7 +35,7 @@ GPT Engineer is made to be easy to adapt, extend, and make your agent learn how 
   - (Note, `go run . --help` lets you see all available options. For example `--steps use_feedback` lets you improve/fix code in a project)
 
 **(optional) Database**
-You should use the scheme of the database instead of the path to your projects. View the readme files in the `database` folder to understand how to use.
+You should use the scheme of the database instead of the path to your projects. View the readme files in the `database` folder to understand how to use. example, instead of `./projects/my-new-project` use `file://./projects/my-new-project` to ensure the file database is used.
 
 **(optional) Azure**
 - use the argument `-model [your deployment name]`, when using Azure this must be set
@@ -54,4 +54,3 @@ You can specify the "identity" of the AI agent by editing the files in the `iden
 Editing the identity, and evolving the main_prompt, is currently how you make the agent remember things between projects.
 
 Each step in `steps.go` will have its communication history with GPT4 stored in the `logs` folder.
-

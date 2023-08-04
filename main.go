@@ -43,8 +43,11 @@ func main() {
 		messages := step(ai, dbs)
 
 		pc := runtime.FuncForPC(reflect.ValueOf(step).Pointer())
-		funcName := strings.ReplaceAll(pc.Name(), "main.", "") // 去除包名
+		funcName := strings.ReplaceAll(pc.Name(), "main.", "")
 		contents, _ := json.Marshal(messages)
-		dbs.logs.Set(funcName, string(contents))
+		if err := dbs.logs.Set(funcName, string(contents)); err != nil {
+			fmt.Printf("failed to write log, %s", err)
+			os.Exit(1)
+		}
 	}
 }

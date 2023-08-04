@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/geekr-dev/gpt-engineer/database"
-	"github.com/geekr-dev/gpt-engineer/database/file"
-	_ "github.com/geekr-dev/gpt-engineer/database/github"
-	_ "github.com/geekr-dev/gpt-engineer/database/memory"
+	"github.com/go-pax/gpt-engineer/database"
+	"github.com/go-pax/gpt-engineer/database/file"
+	_ "github.com/go-pax/gpt-engineer/database/github"
+	_ "github.com/go-pax/gpt-engineer/database/memory"
 )
 
 type DBs struct {

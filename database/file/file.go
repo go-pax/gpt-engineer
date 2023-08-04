@@ -1,7 +1,7 @@
 package file
 
 import (
-	"github.com/geekr-dev/gpt-engineer/database"
+	"github.com/go-pax/gpt-engineer/database"
 	"io"
 	"io/fs"
 	nurl "net/url"
@@ -33,6 +33,10 @@ func (f File) Open(url, subDir string) (database.Database, error) {
 	if subDir != "" {
 		p = path.Join(p, subDir)
 	}
+	if err := os.MkdirAll(p, 0766); err != nil {
+		return nil, err
+	}
+
 	nf := &File{
 		url:  url,
 		path: p,
@@ -80,7 +84,7 @@ func (f File) Get(key string) (string, error) {
 }
 
 func (f File) Set(key, val string) error {
-	return os.WriteFile(filepath.Join(f.path, key), []byte(val), 06444)
+	return os.WriteFile(filepath.Join(f.path, key), []byte(val), 0644)
 }
 
 func (f File) Path() string {

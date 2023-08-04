@@ -25,20 +25,20 @@ GPT Engineer is made to be easy to adapt, extend, and make your agent learn how 
 - `export OPENAI_API_KEY=[your api key]` with a key that has GPT4 access, if you don't have GPT4 access, then it will use GPT-3.5 as a fallback.
 
 **Azure**
-- `export OPENAI_BASE=[your Azure OpenAI URL endpoint]` should be _https://[deployment name].openai.azure.com/_
+- also add `export OPENAI_API_BASE=[your Azure OpenAI URL endpoint]` should be _https://[deployment name].openai.azure.com/_
 
 ### Run:
 - Create an empty folder. If inside the repo, you can run:
   - `cp -r projects/example/ projects/my-new-project`
 - Edit `main_prompt` file in your new folder to specify what you want to build
-- Run `go run ./projects/my-new-project`, default language is English, if you want to use other language, and `-lang` argument like `go run . -lang=Chinese`
+- Run `go run . ./projects/my-new-project`, default language is English, if you want to use other language, and `-lang` argument like `go run . -lang=Chinese`
   - (Note, `go run . --help` lets you see all available options. For example `--steps use_feedback` lets you improve/fix code in a project)
 
 **(optional) Database**
 You should use the scheme of the database instead of the path to your projects. View the readme files in the `database` folder to understand how to use.
 
 **(optional) Azure**
-- use the argument `-model [your deployment name]`
+- use the argument `-model [your deployment name]`, when using Azure this must be set
 
 ### Results:
 - Check the generated files in `projects/my-new-project`

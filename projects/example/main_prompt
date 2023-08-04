@@ -1,6 +1,1 @@
-I want a Terraform project that creates Azure resources including:
-
-- resource group in east us
-- sql server database named shop
-- key vault that stores the connection string to shop
-- app service in linux that has a managed identity with access to the key vault
+We are writing snake in python. MVC components split in separate files. Keyboard control.

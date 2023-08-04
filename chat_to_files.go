@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/geekr-dev/gpt-engineer/database"
+	"github.com/go-pax/gpt-engineer/database"
 	"regexp"
 )
 
@@ -34,10 +34,14 @@ func parseChat(chat string) []fileItem {
 }
 
 func toFiles(chat string, workspace database.Database) {
-	workspace.Set("all_output.txt", chat)
+	if err := workspace.Set("all_output.txt", chat); err != nil {
+		panic(err)
+	}
 
 	files := parseChat(chat)
 	for _, file := range files {
-		workspace.Set(file.path, file.code)
+		if err := workspace.Set(file.path, file.code); err != nil {
+			panic(err)
+		}
 	}
 }

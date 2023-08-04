@@ -2,7 +2,7 @@ package memory
 
 import (
 	"fmt"
-	"github.com/geekr-dev/gpt-engineer/database"
+	"github.com/go-pax/gpt-engineer/database"
 )
 
 const (

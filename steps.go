@@ -80,7 +80,9 @@ func genSpec(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 
 	specPrompt, _ := dbs.identity.Get("spec")
 	messages = ai.Next(messages, specPrompt)
-	dbs.memory.Set("specification", messages[len(messages)-1].Content)
+	if err := dbs.memory.Set("specification", messages[len(messages)-1].Content); err != nil {
+		panic(err)
+	}
 	return messages
 }
 
@@ -96,7 +98,10 @@ func respec(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 		"If there are things that can be improved, please incorporate the improvements."+
 		"If you are satisfied with the specification, just write out the specification word by word again.")
 
-	dbs.memory.Set("specification", messages[len(messages)-1].Content)
+	if err := dbs.memory.Set("specification", messages[len(messages)-1].Content); err != nil {
+		panic(err)
+	}
+
 	return messages
 }
 
@@ -113,7 +118,9 @@ func genUnitTests(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	unitTestPrompt, _ := dbs.identity.Get("unit_tests")
 	messages = ai.Next(messages, unitTestPrompt)
 	unitTestContent := messages[len(messages)-1].Content
-	dbs.memory.Set("unit_tests", unitTestContent)
+	if err := dbs.memory.Set("unit_tests", unitTestContent); err != nil {
+		panic(err)
+	}
 	toFiles(unitTestContent, dbs.workspace)
 
 	return messages
@@ -208,13 +215,14 @@ func genEntrypoint(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 		runShContent := make([]string, 0)
 
 		for _, match := range matches {
-			// match[0] 包含整个匹配到的文本，但我们只关心第一个子匹配
 			if len(match) > 1 {
 				runShContent = append(runShContent, match[1])
 			}
 		}
 
-		dbs.workspace.Set("run.sh", strings.Join(runShContent, "\n"))
+		if err := dbs.workspace.Set("run.sh", strings.Join(runShContent, "\n")); err != nil {
+			panic(err)
+		}
 	}
 
 	return messages

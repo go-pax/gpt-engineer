@@ -4,7 +4,7 @@
 package testing
 
 import (
-	"github.com/geekr-dev/gpt-engineer/database"
+	"github.com/go-pax/gpt-engineer/database"
 	"testing"
 )
 

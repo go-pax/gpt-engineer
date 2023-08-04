@@ -1,8 +1,6 @@
 # GPT Engineer
 
-[中文文档](https://github.com/geekr-dev/gpt-engineer/blob/master/README_zh.md)
-
-> Golang implement version of [AntonOsika/gpt-engineer](https://github.com/AntonOsika/gpt-engineer), With support to switch language by `-lang` argument.
+Thanks to the projects [AntonOsika/gpt-engineer](https://github.com/AntonOsika/gpt-engineer) and [geekr-dev/gpt-engineer](https://github.com/geekr-dev/gpt-engineer)
 
 **Specify what you want it to build, the AI asks for clarification, and then builds it.**
 
@@ -27,20 +25,20 @@ GPT Engineer is made to be easy to adapt, extend, and make your agent learn how 
 - `export OPENAI_API_KEY=[your api key]` with a key that has GPT4 access, if you don't have GPT4 access, then it will use GPT-3.5 as a fallback.
 
 **Azure**
-- `export OPENAI_BASE=[your Azure OpenAI URL endpoint]` should be _https://[deployment name].openai.azure.com/_
+- needed for Azure OAI `export OPENAI_API_BASE=[your Azure OpenAI URL endpoint]` should be _https://[deployment name].openai.azure.com/_
 
 ### Run:
 - Create an empty folder. If inside the repo, you can run:
   - `cp -r projects/example/ projects/my-new-project`
 - Edit `main_prompt` file in your new folder to specify what you want to build
-- Run `go run ./projects/my-new-project`, default language is English, if you want to use other language, and `-lang` argument like `go run . -lang=Chinese`
+- Run `go run . ./projects/my-new-project`, default language is English, if you want to use other language, and `-lang` argument like `go run . -lang=Chinese`
   - (Note, `go run . --help` lets you see all available options. For example `--steps use_feedback` lets you improve/fix code in a project)
 
 **(optional) Database**
-You should use the scheme of the database instead of the path to your projects. View the readme files in the `database` folder to understand how to use.
+You should use the scheme of the database instead of the path to your projects. View the readme files in the `database` folder to understand how to use. example, instead of `./projects/my-new-project` use `file://./projects/my-new-project` to ensure the file database is used.
 
 **(optional) Azure**
-- use the argument `-model [your deployment name]`
+- use the argument `-model [your deployment name]`, when using Azure this must be set
 
 ### Results:
 - Check the generated files in `projects/my-new-project`
@@ -56,4 +54,3 @@ You can specify the "identity" of the AI agent by editing the files in the `iden
 Editing the identity, and evolving the main_prompt, is currently how you make the agent remember things between projects.
 
 Each step in `steps.go` will have its communication history with GPT4 stored in the `logs` folder.
-

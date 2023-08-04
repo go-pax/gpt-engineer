@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	st "github.com/geekr-dev/gpt-engineer/database/testing"
+	st "github.com/go-pax/gpt-engineer/database/testing"
 )
 
 var GithubTestSecret = "" // username:token

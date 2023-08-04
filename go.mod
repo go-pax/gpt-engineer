@@ -1,4 +1,4 @@
-module github.com/geekr-dev/gpt-engineer
+module github.com/go-pax/gpt-engineer
 
 go 1.20
 

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-pax/gpt-engineer/database"
+	"github.com/go-pax/gpt-engineer/io"
 	"regexp"
 )
 
@@ -40,7 +42,11 @@ func toFiles(chat string, workspace database.Database) {
 
 	files := parseChat(chat)
 	for _, file := range files {
+		if file.path == "" {
+			file.path = io.GenerateRandomFilename()
+		}
 		if err := workspace.Set(file.path, file.code); err != nil {
+			fmt.Println("error, possibly openai returned invalid filename.")
 			panic(err)
 		}
 	}

@@ -20,7 +20,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 You can just download the executable from the Release section on GitHub.
 
-1. Download the archive that matches your system here, https://github.com/go-pax/gpt-engineer/releases/tag/v0.1.0
+1. Download the archive that matches your system here, https://github.com/go-pax/gpt-engineer/releases
 2. Extract the contents of the archive into a folder where you will run `gpt-engineer`
 3. Open a terminal/command prompt and `cd` to the folder with `gpt-engineer`
 4. Generate an OpenAI API key at, https://platform.openai.com/account/api-keys and copy the key.

@@ -1,18 +1,22 @@
 package main
 
 import (
+	"embed"
 	"github.com/go-pax/gpt-engineer/database"
 	"github.com/go-pax/gpt-engineer/database/file"
 	_ "github.com/go-pax/gpt-engineer/database/github"
 	_ "github.com/go-pax/gpt-engineer/database/memory"
 )
 
+//go:embed identity/*
+var identityFS embed.FS
+
 type DBs struct {
 	canExecute bool
 	dbType     string
 	memory     database.Database
 	logs       database.Database
-	identity   database.Database
+	identity   embed.FS
 	input      database.Database
 	workspace  database.Database
 }
@@ -40,17 +44,12 @@ func NewDBs(projectPath string, prompt string) (DBs, error) {
 		}
 	}
 
-	identityDB, err := database.Open("file://./", "identity")
-	if err != nil {
-		return DBs{}, err
-	}
-
 	return DBs{
 		canExecute: file.CanExecute,
 		memory:     memoryDB,
 		logs:       logDB,
 		input:      inputDB,
 		workspace:  workspaceDB,
-		identity:   identityDB,
+		identity:   identityFS,
 	}, nil
 }

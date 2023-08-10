@@ -14,11 +14,11 @@ import (
 )
 
 func setupSysPrompt(ai *AI, dbs DBs) string {
-	setupPrompt, _ := dbs.identity.Get("generate")
-	philosophyTemplate, _ := dbs.identity.Get("philosophy")
-	t := prompts.NewPromptTemplate(philosophyTemplate, nil)
+	setupPrompt, _ := dbs.identity.ReadFile("identity/generate")
+	philosophyTemplate, _ := dbs.identity.ReadFile("identity/philosophy")
+	t := prompts.NewPromptTemplate(string(philosophyTemplate), nil)
 	philosophyPrompt, _ := t.Format(map[string]any{"lang": ai.lang})
-	return setupPrompt + "\nUseful to know:\n" + philosophyPrompt
+	return string(setupPrompt) + "\nUseful to know:\n" + philosophyPrompt
 }
 
 func simpleGen(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
@@ -36,8 +36,8 @@ func simpleGen(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 // Ask the user if they want to clarify anything and save the results to the workspace
 func clarify(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	// 1. system prompt
-	qaTemplate, _ := dbs.identity.Get("qa")
-	t := prompts.NewPromptTemplate(qaTemplate, nil)
+	qaTemplate, _ := dbs.identity.ReadFile("identity/qa")
+	t := prompts.NewPromptTemplate(string(qaTemplate), nil)
 	qaPrompt, _ := t.Format(map[string]any{"lang": ai.lang})
 	messages := []openai.ChatCompletionMessage{
 		ai.SystemMessage(qaPrompt),
@@ -78,8 +78,8 @@ func genSpec(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 		ai.SystemMessage("Instructions: " + userPrompt),
 	}
 
-	specPrompt, _ := dbs.identity.Get("spec")
-	messages = ai.Next(messages, specPrompt)
+	specPrompt, _ := dbs.identity.ReadFile("identity/spec")
+	messages = ai.Next(messages, string(specPrompt))
 	if err := dbs.memory.Set("specification", messages[len(messages)-1].Content); err != nil {
 		panic(err)
 	}
@@ -90,8 +90,8 @@ func respec(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	specMessages, _ := dbs.logs.Get("genSpec")
 	var messages []openai.ChatCompletionMessage
 	json.Unmarshal([]byte(specMessages), &messages)
-	respecPrompt, _ := dbs.identity.Get("respec")
-	messages = append(messages, ai.SystemMessage(respecPrompt))
+	respecPrompt, _ := dbs.identity.ReadFile("identity/respec")
+	messages = append(messages, ai.SystemMessage(string(respecPrompt)))
 
 	messages = ai.Next(messages, "")
 	messages = ai.Next(messages, "Based on the conversation so far, please reiterate the specification for the program."+
@@ -115,8 +115,8 @@ func genUnitTests(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 		ai.UserMessage("Specification: " + specPrompt),
 	}
 
-	unitTestPrompt, _ := dbs.identity.Get("unit_tests")
-	messages = ai.Next(messages, unitTestPrompt)
+	unitTestPrompt, _ := dbs.identity.ReadFile("identity/unit_tests")
+	messages = ai.Next(messages, string(unitTestPrompt))
 	unitTestContent := messages[len(messages)-1].Content
 	if err := dbs.memory.Set("unit_tests", unitTestContent); err != nil {
 		panic(err)
@@ -133,8 +133,8 @@ func genClarifiedCode(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	json.Unmarshal([]byte(clarifyContent), &messages)
 
 	messages[0] = ai.SystemMessage(setupSysPrompt(ai, dbs))
-	useQaPrompt, _ := dbs.identity.Get("use_qa")
-	messages = ai.Next(messages, useQaPrompt)
+	useQaPrompt, _ := dbs.identity.ReadFile("identity/use_qa")
+	messages = ai.Next(messages, string(useQaPrompt))
 
 	toFiles(messages[len(messages)-1].Content, dbs.workspace)
 
@@ -153,8 +153,8 @@ func genCode(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 		ai.UserMessage("Unit tests:\n\n" + unitTestPrompt),
 	}
 
-	useQaPrompt, _ := dbs.identity.Get("use_qa")
-	messages = ai.Next(messages, useQaPrompt)
+	useQaPrompt, _ := dbs.identity.ReadFile("identity/use_qa")
+	messages = ai.Next(messages, string(useQaPrompt))
 
 	toFiles(messages[len(messages)-1].Content, dbs.workspace)
 
@@ -231,12 +231,12 @@ func genEntrypoint(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 func useFeedback(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	userPrompt, _ := dbs.input.Get("main_prompt")
 	outputTxt, _ := dbs.workspace.Get("all_output.txt")
-	useFeedbackPrompt, _ := dbs.identity.Get("use_feedback")
+	useFeedbackPrompt, _ := dbs.identity.ReadFile("identity/use_feedback")
 	messages := []openai.ChatCompletionMessage{
 		ai.SystemMessage(setupSysPrompt(ai, dbs)),
 		ai.UserMessage("Instructions: " + userPrompt),
 		ai.AssistantMessage(outputTxt),
-		ai.SystemMessage(useFeedbackPrompt),
+		ai.SystemMessage(string(useFeedbackPrompt)),
 	}
 	feedback, _ := dbs.memory.Get("feedback")
 	messages = ai.Next(messages, feedback)
@@ -250,12 +250,12 @@ func fixCode(ai *AI, dbs DBs) []openai.ChatCompletionMessage {
 	json.Unmarshal([]byte(genCodes), &messages)
 	codeOutput := messages[len(messages)-1].Content
 	userPrompt, _ := dbs.input.Get("main_prompt")
-	fixCodePrompt, _ := dbs.identity.Get("fix_code")
+	fixCodePrompt, _ := dbs.identity.ReadFile("identity/fix_code")
 	messages = []openai.ChatCompletionMessage{
 		ai.SystemMessage(setupSysPrompt(ai, dbs)),
 		ai.UserMessage("Instructions: " + userPrompt),
 		ai.UserMessage(codeOutput),
-		ai.SystemMessage(fixCodePrompt),
+		ai.SystemMessage(string(fixCodePrompt)),
 	}
 	messages = ai.Next(messages, "Please fix any errors in the code above.")
 	toFiles(messages[len(messages)-1].Content, dbs.workspace)

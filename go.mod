@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/google/go-github/v39 v39.2.0
-	github.com/sashabaranov/go-openai v1.14.1
+	github.com/sashabaranov/go-openai v1.15.2
 	github.com/stretchr/testify v1.8.4
 	github.com/tmc/langchaingo v0.0.0-20230613190213-fbdcf425027a
 	golang.org/x/oauth2 v0.11.0

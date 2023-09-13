@@ -100,8 +100,10 @@ func (g *Github) ensureRepo() error {
 		g.config.Repo,
 	); err != nil {
 		// create repo
+		visibility := "internal"
 		if _, _, err = g.client.Repositories.Create(context.Background(), g.config.Owner, &github.Repository{
-			Name: &g.config.Repo,
+			Name:       &g.config.Repo,
+			Visibility: &visibility,
 		}); err != nil {
 			return err
 		}
